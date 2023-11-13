@@ -1,0 +1,21 @@
+<xml>
+	<multiplier x="1.25" y="1.5" />
+
+	<slot id="13" x="0" y="0.5" faceup="1" layer="0" />
+
+	<slot id="1" x="7" y="0.5" faceup="0" layer="1" />
+	<slot id="2" x="6" y="-2.5" faceup="0" layer="1" />
+	<slot id="3" x="3.25" y="-4" faceup="0" layer="1" />
+	<slot id="4" x="0" y="-4.5" faceup="0" layer="1" />
+	<slot id="5" x="-3.25" y="-4" faceup="0" layer="1" />
+	<slot id="6" x="-6" y="-2.5" faceup="0" layer="1" />
+	<slot id="7" x="-7" y="0.5" faceup="0" layer="1" />
+	<slot id="8" x="-6" y="3.75" faceup="0" layer="1" />
+	<slot id="9" x="-3.25" y="5.5" faceup="0" layer="1" />
+	<slot id="10" x="0" y="6" faceup="0" layer="1" />
+	<slot id="11" x="3.25" y="5.5" faceup="0" layer="1" />
+	<slot id="12" x="6" y="3.75" faceup="0" layer="1" />
+
+	<slot type="drawpile" x="9" y="6" xstagger="0.2" layer="2" />
+	<slot type="discardpile" x="0" y="0.5" layer="3" />
+</xml>
