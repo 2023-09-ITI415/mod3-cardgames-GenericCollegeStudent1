@@ -275,7 +275,7 @@ MonoBehaviour:
   - {fileID: 21300028, guid: a3dfadce2ec324208b9305ffd5119ba8, type: 3}
   - {fileID: 21300030, guid: a3dfadce2ec324208b9305ffd5119ba8, type: 3}
   - {fileID: 21300032, guid: a3dfadce2ec324208b9305ffd5119ba8, type: 3}
-  cardBack: {fileID: 21300000, guid: a8185ed8d47594bb8a3b8e2d9233f769, type: 3}
+  cardBack: {fileID: 21300000, guid: 0c306aa91709b39499d253ab6f272409, type: 3}
   cardBackGold: {fileID: 21300000, guid: 8ecf4828943064b3a96f6258b54c0f11, type: 3}
   cardFront: {fileID: 21300000, guid: 873a7658b7ec742228520c7b15510f4d, type: 3}
   cardFrontGold: {fileID: 21300000, guid: 944dc539459fe4109b973bd4c97f68ee, type: 3}
