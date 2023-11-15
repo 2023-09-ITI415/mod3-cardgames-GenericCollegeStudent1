@@ -17,4 +17,7 @@
 	<slot id="10" x="-6" y="3.75" faceup="0" layer="1" />
 	<slot id="11" x="-3.25" y="5.5" faceup="0" layer="1" />
 	<slot id="12" x="0" y="6" faceup="0" layer="1" />
+
+	<slot type="drawpile" x="9" y="6" xstagger="0.2" layer="2" />
+	<slot type="discardpile" x="-9" y="-5" layer="3" />
 </xml>

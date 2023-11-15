@@ -361,17 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deckXML: {fileID: 4900000, guid: 26f4254b2a276cd458490c525e82431c, type: 3}
   layoutXML: {fileID: 4900000, guid: 0822afdc0ef869946b91b1715c3170f4, type: 3}
-  xOffset: 3
-  yOffset: -2.5
   layoutCenter: {x: 0, y: 0, z: 0}
-  fsPosMid: {x: 0.5, y: 0.9}
-  fsPosRun: {x: 0.5, y: 0.75}
-  fsPosMid2: {x: 0.4, y: 1}
-  fsPosEnd: {x: 0.5, y: 0.95}
-  reloadDelay: 2
-  gameOverText: {fileID: 1886022488}
-  roundResultText: {fileID: 1639726498}
-  highScoreText: {fileID: 2096991778}
   deck: {fileID: 0}
   layout: {fileID: 0}
   drawPile: []
@@ -379,7 +369,6 @@ MonoBehaviour:
   target: {fileID: 0}
   tableau: []
   discardPile: []
-  fsRun: {fileID: 0}
 --- !u!1 &1639726496
 GameObject:
   m_ObjectHideFlags: 0
