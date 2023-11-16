@@ -7,7 +7,10 @@ public enum CardState
     drawpile,
     tableau,
     target,
-    discard
+    discard,
+    clock,
+    center
+
 }
 public class CardClock : Card
 {

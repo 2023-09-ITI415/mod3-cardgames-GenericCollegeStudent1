@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01-Prospector/__Prospector.unity
     guid: e7876eae655084f8d9b344b33478f0fa
+  - enabled: 1
+    path: Assets/02-Game/__Clock.unity
+    guid: ac14b570b2e50e240bb22a8cc1c27d0d
   m_configObjects: {}
