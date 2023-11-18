@@ -55,7 +55,7 @@ public class Scoreboard : MonoBehaviour
     {
         score += fs.score;
     }
-    // This will Instantiate a new FloatingScore GameObject and initialize
+    // This will Instantiate a new FloatingScore GameObject and initialize it.
 // It also returns a pointer to the FloatingScore created so that the
 // calling function can do more with it (like set fontSizes, and so on)
 public FloatingScore CreateFloatingScore(int amt, List<Vector2> pts)

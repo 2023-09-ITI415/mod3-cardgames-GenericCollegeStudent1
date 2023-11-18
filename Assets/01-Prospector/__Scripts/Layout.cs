@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// The SlotDef class is not a subclass of MonoBehaviour, so it doesn'tneed
 // a separate C# file.
-[System.Serializable] // This makes SlotDefs visible in the Unity
-
+[System.Serializable] // This makes SlotDefs visible in the Unity Inspector pane
 public class SlotDef
 {
     public float x;

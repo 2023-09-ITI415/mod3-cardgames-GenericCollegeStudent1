@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-
+// An enum to track the possible states of a FloatingScore
 public enum eFSState
 {
     idle,
@@ -39,8 +38,8 @@ public class FloatingScore : MonoBehaviour
     public float timeStart = -1f;
     public float timeDuration = 1f;
     public string easingCurve = Easing.InOut; // Uses Easing in Utils.cs
-                                              // The GameObject that will receive the SendMessage when this is don
-public GameObject reportFinishTo = null;
+                                              // The GameObject that will receive the SendMessage when this is done   moving
+    public GameObject reportFinishTo = null;
     private RectTransform rectTrans;
     private Text txt;
     // Set up the FloatingScore and movement
