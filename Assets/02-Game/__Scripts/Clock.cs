@@ -240,7 +240,7 @@ public class Clock : MonoBehaviour
                 MoveToTarget(Draw()); // Moves the next drawn card to the target
                 UpdateDrawPile(); // Restacks the drawPile
                 ScoreManager.EVENT(eScoreEvent.draw);
-                
+
 
 
                 break;
@@ -265,7 +265,7 @@ public class Clock : MonoBehaviour
 
                 SetTableauFaces(); //update tableau card face-ups
                 ScoreManager.EVENT(eScoreEvent.mine);
-                
+
 
                 break;
         }
@@ -312,7 +312,7 @@ public class Clock : MonoBehaviour
             roundResultText.text = "You won this round!\nRound Score: " + score;
             //print("Game Over. You won! :)");
             ScoreManager.EVENT(eScoreEvent.gameWin);
-            
+
 
         }
         else
@@ -327,9 +327,9 @@ public class Clock : MonoBehaviour
             {
                 roundResultText.text = "Your final score was: " + score;
             }
-            
+
             //print("Game Over. You Lost. :(");
-            
+
 
         }
 
@@ -361,4 +361,5 @@ public class Clock : MonoBehaviour
     }
 
 }
-   
+
+
