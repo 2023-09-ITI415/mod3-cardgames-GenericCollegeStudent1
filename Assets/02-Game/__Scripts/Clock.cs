@@ -20,7 +20,7 @@ public class Clock : MonoBehaviour
     public Vector2 fsPosRun = new Vector2(0.5f, 0.75f);
     public Vector2 fsPosMid2 = new Vector2(0.4f, 1.0f);
     public Vector2 fsPosEnd = new Vector2(0.5f, 0.95f);
-    public float reloadDelay = 2f;
+    public float reloadDelay = 2f;// 2 sec delay between rounds
     public Text gameOverText, roundResultText, highScoreText;
 
 
@@ -37,63 +37,32 @@ public class Clock : MonoBehaviour
     public FloatingScore fsRun;
 
 
-
-
     void Awake()
     {
         S = this;
-        SetUpUITexts();
+
     }
-    void SetUpUITexts()
-    {
-        // Set up the HighScore UI Text
-        GameObject go = GameObject.Find("HighScore");
-        if (go != null)
-        {
-            highScoreText = go.GetComponent<Text>();
-        }
-        int highScore = ScoreManager.HIGH_SCORE;
-        string hScore = "High Score: " + Utils.AddCommasToNumber(highScore);
-        go.GetComponent<Text>().text = hScore;
-        // Set up the UI Texts that show at the end of the round
-        go = GameObject.Find("GameOver");
-        if (go != null)
-        {
-            gameOverText = go.GetComponent<Text>();
-        }
-        go = GameObject.Find("RoundResult");
-        if (go != null)
-        {
-            roundResultText = go.GetComponent<Text>();
-        }
-        // Make the end of round texts invisible
-        ShowResultsUI(false);
-    }
-    void ShowResultsUI(bool show)
-    {
-        gameOverText.gameObject.SetActive(show);
-        roundResultText.gameObject.SetActive(show);
-    }
+
 
     void Start()
     {
-        Scoreboard.S.score = ScoreManager.SCORE;
 
         deck = GetComponent<Deck>();
         deck.InitDeck(deckXML.text);
-        Deck.Shuffle(ref deck.cards);
-        //Card c;
-        // for (int cNum = 0; cNum < deck.cards.Count; cNum++)
-        //  { // b
-        //      c = deck.cards[cNum];
-        //      c.transform.localPosition = new Vector3((cNum % 13) * 3, cNum / 13 * 4, 0);
-        //  }
-        layout = GetComponent<Layout>();
-        layout.ReadLayout(layoutXML.text);
+        Deck.Shuffle(ref deck.cards); //this suffles the deck by reference//a
+                                      //Card c;
+                                      //for(int cNum = 0; cNum < deck.cards.Count; cNum++)
+                                      // {
+                                      //c = deck.cards[cNum];
+                                      //c.transform.localPosition = new Vector3((cNum % 13) * 3, cNum / 13 * 4, 0);
+                                      // }
+        layout = GetComponent<Layout>(); //get the layout component
+        layout.ReadLayout(layoutXML.text); //pass LaoutXML to it
+
         drawPile = ConvertListCardsToListCardProspectors(deck.cards);
         LayoutGame();
-
     }
+
     List<CardClock> ConvertListCardsToListCardProspectors(List<Card> lCD)
     {
         List<CardClock> lCP = new List<CardClock>();
@@ -106,13 +75,14 @@ public class Clock : MonoBehaviour
         return (lCP);
     }
 
+    // The Draw function will pull a single card from the drawPile and return it
     CardClock Draw()
     {
         CardClock cd = drawPile[0]; // Pull the 0th CardClock
         drawPile.RemoveAt(0); // Then remove it from List<> drawPile
         return (cd); // And return it
     }
-    // LayoutGame() positions the initial tableau of cards, a.k.a. the
+    // LayoutGame() positions the initial tableau of cards, a.k.a. the "mine"
     void LayoutGame()
     {
         // Create an empty GameObject to serve as an anchor for the tableau // a
@@ -133,32 +103,35 @@ public class Clock : MonoBehaviour
             cp.transform.parent = layoutAnchor; // Make its parent layoutAnchor
                                                 // This replaces the previous parent: deck.deckAnchor, which
                                                 // appears as _Deck in the Hierarchy when the scene is playing.
-            cp.transform.localPosition = new Vector3(
-            layout.multiplier.x * tSD.x,
-            layout.multiplier.y * tSD.y,
-            -tSD.layerID);
+
+            cp.transform.localPosition = new Vector3(layout.multiplier.x * tSD.x, layout.multiplier.y * tSD.y, -tSD.layerID);
             // ^ Set the localPosition of the card based on slotDef
             cp.layoutID = tSD.id;
             cp.slotDef = tSD;
             // CardProspectors in the tableau have the state CardState.tableau
             cp.state = CardState.tableau;
-            cp.SetSortingLayerName(tSD.layerName);
+            //CardProspectors in the tableau have the state cardstate.tableau
+            cp.SetSortingLayerName(tSD.layerName); //set the sorting layers
             tableau.Add(cp); // Add this CardClock to the List<> tableau
 
-        }
-        foreach (CardClock tCP in tableau)
-        {
-            foreach (int hid in tCP.slotDef.hiddenBy)
+            // Set which cards are hiding others
+            foreach (CardClock tCP in tableau)
             {
-                cp = FindCardByLayoutID(hid);
-                tCP.hiddenBy.Add(cp);
+                foreach (int hid in tCP.slotDef.hiddenBy)
+                {
+                    cp = FindCardByLayoutID(hid);
+                    tCP.hiddenBy.Add(cp);
+                }
             }
         }
+
+        // Set up the initial target card
         MoveToTarget(Draw());
         // Set up the Draw pile
         UpdateDrawPile();
-
     }
+
+    // Convert from the layoutID int to the CardClock with that ID
     CardClock FindCardByLayoutID(int layoutID)
     {
         foreach (CardClock tCP in tableau)
@@ -181,15 +154,20 @@ public class Clock : MonoBehaviour
             bool faceUp = true; // Assume the card will be face-up
             foreach (CardClock cover in cd.hiddenBy)
             {
-                // If either of the covering cards are in the tableau
-                if (cover.state == CardState.tableau)
+                if (cover != null) // Check if cover is not null
                 {
-                    faceUp = false; // then this card is face-down
+                    // If either of the covering cards are in the tableau
+                    if (cover.state == CardState.tableau)
+                    {
+                        faceUp = false; // then this card is face-down
+                    }
                 }
             }
             cd.faceUp = faceUp; // Set the value on the card
         }
     }
+
+    // Moves the current target to the discardPile
     void MoveToDiscard(CardClock cd)
     {
         // Set the state of the card to discard
@@ -246,6 +224,8 @@ public class Clock : MonoBehaviour
             cd.SetSortOrder(-10 * i);
         }
     }
+
+    // CardClicked is called any time a card in the game is clicked
     public void CardClicked(CardClock cd)
     {
         // The reaction is determined by the state of the clicked card
@@ -260,11 +240,13 @@ public class Clock : MonoBehaviour
                 MoveToTarget(Draw()); // Moves the next drawn card to the target
                 UpdateDrawPile(); // Restacks the drawPile
                 ScoreManager.EVENT(eScoreEvent.draw);
-                FloatingScoreHandler(eScoreEvent.draw);
+                
 
 
                 break;
             case CardState.tableau:
+                // Clicking a card in the tableau will check if it's a valid play
+
                 bool validMatch = true;
                 if (!cd.faceUp)
                 {
@@ -280,18 +262,19 @@ public class Clock : MonoBehaviour
                                          // If we got here, then: Yay! It's a valid card.
                 tableau.Remove(cd); // Remove it from the tableau List
                 MoveToTarget(cd); // Make it the target card
-                SetTableauFaces();
-                ScoreManager.EVENT(eScoreEvent.mine);
-                FloatingScoreHandler(eScoreEvent.mine);
 
+                SetTableauFaces(); //update tableau card face-ups
+                ScoreManager.EVENT(eScoreEvent.mine);
+                
 
                 break;
-
         }
-        // Check to see whether the game is over or not
+
+        // After the card is clicked, check if the game is over
         CheckForGameOver();
     }
-    // Test whether the game is over
+
+    // Check to see whether the game is over or not
     void CheckForGameOver()
     {
         // If the tableau is empty, the game is over
@@ -299,39 +282,37 @@ public class Clock : MonoBehaviour
         {
             // Call GameOver() with a win
             GameOver(true);
-            return;
         }
-        // If there are still cards in the draw pile, the game's not over
-        if (drawPile.Count > 0)
+        else if (drawPile.Count == 0)
         {
-            return;
-        }
-        // Check for remaining valid plays
-        foreach (CardClock cd in tableau)
-        {
-            if (AdjacentRank(cd, target))
+            // Check for remaining valid plays
+            foreach (CardClock cd in tableau)
             {
-                // If there is a valid play, the game's not over
-                return;
+                if (AdjacentRank(cd, target))
+                {
+                    // If there is a valid play, the game's not over
+                    return;
+                }
             }
+            // Since there are no valid plays, the game is over
+            // Call GameOver with a loss
+            GameOver(false);
         }
-        // Since there are no valid plays, the game is over
-        // Call GameOver with a loss
-        GameOver(false);
     }
+
     // Called when the game is over. Simple for now, but expandable
     void GameOver(bool won)
     {
         int score = ScoreManager.SCORE;
         if (fsRun != null) score += fsRun.score;
+
         if (won)
         {
             gameOverText.text = "Round Over";
             roundResultText.text = "You won this round!\nRound Score: " + score;
-            ShowResultsUI(true);
+            //print("Game Over. You won! :)");
             ScoreManager.EVENT(eScoreEvent.gameWin);
-            FloatingScoreHandler(eScoreEvent.gameWin);
-
+            
 
         }
         else
@@ -346,19 +327,22 @@ public class Clock : MonoBehaviour
             {
                 roundResultText.text = "Your final score was: " + score;
             }
-            ShowResultsUI(true);
-            ScoreManager.EVENT(eScoreEvent.gameLoss);
-            FloatingScoreHandler(eScoreEvent.gameLoss);
+            
+            //print("Game Over. You Lost. :(");
+            
 
         }
-        // Reload the scene, resetting the game
-        Invoke("ReloadLevel", reloadDelay);
+
+        Invoke("ReloadLevel", reloadDelay); // a
     }
     void ReloadLevel()
     {
         // Reload the scene, resetting the game
         SceneManager.LoadScene("__Clock");
     }
+
+
+
     // Return true if the two cards are adjacent in rank (A & K wrap around)
     public bool AdjacentRank(CardClock c0, CardClock c1)
     {
@@ -375,58 +359,6 @@ public class Clock : MonoBehaviour
         // Otherwise, return false
         return (false);
     }
-    void FloatingScoreHandler(eScoreEvent evt)
-    {
-        List<Vector2> fsPts;
-        switch (evt)
-        {
-            // Same things need to happen whether it's a draw, a win, or a loss
-            case eScoreEvent.draw: // Drawing a card
-            case eScoreEvent.gameWin: // Won the round
-            case eScoreEvent.gameLoss: // Lost the round
-                                       // Add fsRun to the Scoreboard score
-                if (fsRun != null)
-                {
-                    // Create points for the Bézier curve1
-                    fsPts = new List<Vector2>();
-                    fsPts.Add(fsPosRun);
-                    fsPts.Add(fsPosMid2);
-                    fsPts.Add(fsPosEnd);
-                    fsRun.reportFinishTo = Scoreboard.S.gameObject;
-                    fsRun.Init(fsPts, 0, 1);
-                    // Also adjust the fontSize
-                    fsRun.fontSizes = new List<float>(new float[] { 28, 36, 4 });
-                    fsRun = null; // Clear fsRun so it's created again
-                }
-                break;
-            case eScoreEvent.mine: // Remove a mine card
-                                   // Create a FloatingScore for this score
-                FloatingScore fs;
-                // Move it from the mousePosition to fsPosRun
-                Vector2 p0 = Input.mousePosition;
-                p0.x /= Screen.width;
-                p0.y /= Screen.height;
-                fsPts = new List<Vector2>();
-                fsPts.Add(p0);
-                fsPts.Add(fsPosMid);
-                fsPts.Add(fsPosRun);
-                fs = Scoreboard.S.CreateFloatingScore(ScoreManager.CHAIN, fsPts);
-                fs.fontSizes = new List<float>(new float[] { 4, 50, 28 });
-                if (fsRun == null)
-                {
-                    fsRun = fs;
-                    fsRun.reportFinishTo = null;
-                }
-                else
-                {
-                    fs.reportFinishTo = fsRun.gameObject;
-                }
-                break;
-        }
-    }
 
 }
-
-
-
-
+   
